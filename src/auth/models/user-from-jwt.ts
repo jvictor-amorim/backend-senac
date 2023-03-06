@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 export interface UserFromJwt{
-    id: number;
+    id: string;
     email: string;
     firstname: string;
     role:string;

@@ -49,7 +49,7 @@ export class UserController {
   @Roles(Role.ADMIN, Role.SENAC)
   @UseGuards(JwtGuard, RolesGuard)
   @Get('/secret/:id')
-  findById(@Param('id') id: number) {
+  findById(@Param('id') id: string) {
     return this.userService.findById(id);
   }
 
@@ -58,7 +58,7 @@ export class UserController {
   @UseGuards(JwtGuard, RolesGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+    return this.userService.update(id, updateUserDto);
   }
 
   @ApiBearerAuth()
@@ -66,7 +66,7 @@ export class UserController {
   @UseGuards(JwtGuard, RolesGuard)
   @Patch('secret/:id')
   updateAdm(@Param('id') id: string, @Body() updateUserDto: UpdateAdminDto) {
-    return this.userService.update(+id, updateUserDto);
+    return this.userService.update(id, updateUserDto);
   }
 
   @ApiBearerAuth()
@@ -74,6 +74,6 @@ export class UserController {
   @UseGuards(JwtGuard, RolesGuard)
   @Delete('secret/:id')
   remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+    return this.userService.remove(id);
   }
 }

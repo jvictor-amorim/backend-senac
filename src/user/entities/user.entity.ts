@@ -2,7 +2,7 @@
 
 import { Role } from "@prisma/client";
 export class User {
-  readonly id?: number;
+  readonly id?: string;
   email: string;
   password: string;
   firstname: string;

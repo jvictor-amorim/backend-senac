@@ -5,7 +5,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  console.log("Iniciando o Easy-Order API " + process.env.JWT_SECRET);
   const app = await NestFactory.create(AppModule, { cors: true });
   app.enableCors();
 

@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 
 export interface UserPayload{
-    sub: number;
+    sub: string;
     email: string;
     name: string;
     role: string;
