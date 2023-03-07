@@ -2,7 +2,7 @@
 
 import {User} from '../entities/user.entity'
 
-import {IsEmail, IsString, MinLength, MaxLength, Matches} from 'class-validator'
+import {IsEmail, IsString, MinLength, MaxLength, Matches, IsBoolean} from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger';
 export class CreateUserDto extends User {
   @ApiProperty({example: 'user@example.com'})
@@ -18,10 +18,28 @@ export class CreateUserDto extends User {
   })
   password: string;
 
+  @ApiProperty({example: 'João da Silva Sauros'})
   @IsString()
   firstname: string;
   
+  @ApiProperty({example: '19909882712'})
   @IsString()
-  lastname: string;
+  cpf: string;
+
+  @ApiProperty({example: 'Rua dos bobos, 0'})
+  @IsString()
+  adress: string;
+
+  @ApiProperty({example: true})
+  @IsBoolean()
+  vagas: boolean;
+
+  @ApiProperty({example: true})
+  @IsBoolean()
+  shared: boolean;
+
+  @ApiProperty({example: true})
+  @IsBoolean()
+  published: boolean;
 
 }
