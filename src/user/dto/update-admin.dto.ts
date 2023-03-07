@@ -6,6 +6,5 @@ export interface UpdateAdminDto extends CreateAdminDto {
   email: string;
   password: string;
   firstname: string;
-  lastname: string;
   role: Role;
 }

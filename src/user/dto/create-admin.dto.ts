@@ -7,7 +7,11 @@ export interface CreateAdminDto extends User {
   email: string;
   password: string;
   firstname: string;
-  lastname: string;
+  cpf: string;
+  adress: string;
+  vagas: boolean;
+  shared: boolean;
+  published: boolean;
   role: Role;
 
 }
