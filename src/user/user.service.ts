@@ -19,7 +19,7 @@ export class UserService {
 
     const createdUser = await this.prisma.user.create(
       {
-        data: user,
+        data: {...user, lastname: ''},
       }
       );
     
@@ -37,7 +37,7 @@ export class UserService {
 
     const createdUser = await this.prisma.user.create(
       {
-        data: user,
+        data: {...user, lastname: ''},
       }
       );
     
