@@ -112,5 +112,5 @@ Prisma <br/>
 JWT <br/>
 NestJS <br/>
 Swagger <br/>
-MySQL <br/>
+PostgreSQL <br/>
 bcrypt
