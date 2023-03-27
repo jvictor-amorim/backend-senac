@@ -18,6 +18,20 @@ CREATE TABLE "users" (
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "jobs" (
+    "id" TEXT NOT NULL,
+    "enterprise" TEXT NOT NULL,
+    "owner" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "published" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "active" BOOLEAN NOT NULL DEFAULT true,
+    "quantity" INTEGER NOT NULL,
+    "place" TEXT NOT NULL,
+
+    CONSTRAINT "jobs_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
