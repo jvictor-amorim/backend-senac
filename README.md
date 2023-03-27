@@ -15,7 +15,6 @@ Criação de CRUD's:
 📌 Popular o banco de dados
 📌 Swagger
 
-
 -----------------------------------------------------------------
 
 ## ⏯ Inicializando o Sistema
@@ -31,12 +30,6 @@ Criação de CRUD's:
 ###### __________________________________________________________________________________
 #### npm install --save @nestjs/swagger swagger-ui-express
 ###### Instalar as dependências do Swagger
-###### __________________________________________________________________________________
-#### npx prisma migrate dev
-###### Iniciar as migrações do sistema
-###### __________________________________________________________________________________
-#### npx prisma db seed
-###### Popular o banco de dados
 ###### __________________________________________________________________________________
 #### npm run start:dev
 ###### Execução do backend
@@ -114,3 +107,4 @@ NestJS <br/>
 Swagger <br/>
 PostgreSQL <br/>
 bcrypt
+
