@@ -20,7 +20,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Documentação com Swagger - Easy-Order API')
     .setDescription(
-      'O Easy-Order é um projeto desenvolvido em NodeJS e Angular com o objetivo de simulação de um cardápio digital',
+      'Projeto back-end SENAC, transformação digital.',
     )
     .setVersion('1.0')
     .addTag('Usuários')
