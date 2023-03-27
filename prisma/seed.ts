@@ -2,10 +2,16 @@
 import {usuarios} from './users';
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt'
+import { cursos } from './courses';
 
 const prisma = new PrismaClient();
 
 async function main(){
+    for(const curso of cursos){
+        await prisma.courses.create({
+            data: curso,
+        })
+    }
     for(let i = 0; i <= 3; i++){
         const usuario = usuarios[i];
         const us = {
