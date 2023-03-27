@@ -30,4 +30,5 @@ export class CreateJobDto extends Job {
     @IsString()
     place: string;
 
+    courseId: string;
 }

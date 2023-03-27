@@ -7,30 +7,50 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class JobsService {
   constructor(private readonly prisma: PrismaService){}
   async create(createJobDto: CreateJobDto) {
+    const curso = await this.prisma.courses.findUnique({where:{id: createJobDto.courseId}});
     const job = {
-      ...createJobDto,
+      ...createJobDto, courseId: curso.id
     }
 
-    return await this.prisma.jobs.create(
+    const data = new Date();
+
+    const br = new Date(data.setHours(data.getHours() - 3));
+
+    const created = await this.prisma.jobs.create(
       {
-        data: {...job, enterprise: '', owner: '', published: '', active: true, quantity: 1, place: '', description: 'descricao'},
+        data: {...job, published: br, description: job.descripion},
       }
     );
+
+    return created;
+    
   }
 
-  findAll() {
-    return `This action returns all jobs`;
+  async findAll() {
+    try{
+    return await this.prisma.jobs.findMany();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} job`;
-  }
+  async findOne(id: string) {
+    try {
+      return await this.prisma.jobs.findUnique({
+        where: {
+          id: id,
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+}
 
-  update(id: number, updateJobDto: UpdateJobDto) {
+  async update(id: number, updateJobDto: UpdateJobDto) {
     return `This action updates a #${id} job`;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return `This action removes a #${id} job`;
   }
 }
