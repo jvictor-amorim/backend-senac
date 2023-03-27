@@ -5,24 +5,25 @@ import { UpdateJobDto } from './dto/update-job.dto';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/auth/models/role.enum';
 
+@ApiTags('Vagas')
 @Controller('jobs')
 export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
 
-  @ApiBearerAuth()
-  @Roles(Role.ENTERPRISE)
-  @UseGuards(JwtGuard, RolesGuard)
-  @Post('secret')
+  // @ApiBearerAuth()
+  // @Roles(Role.ENTERPRISE)
+  // @UseGuards(JwtGuard, RolesGuard)
+  @Post()
   create(@Body() createJobDto: CreateJobDto) {
     return this.jobsService.create(createJobDto);
   }
 
-  @ApiBearerAuth()
-  @Roles(Role.ENTERPRISE)
-  @UseGuards(JwtGuard, RolesGuard)
+  // @ApiBearerAuth()
+  // @Roles(Role.ENTERPRISE)
+  // @UseGuards(JwtGuard, RolesGuard)
   @Get()
   findAll() {
     return this.jobsService.findAll();
@@ -30,7 +31,7 @@ export class JobsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.jobsService.findOne(+id);
+    return this.jobsService.findOne(id);
   }
 
   @Patch(':id')

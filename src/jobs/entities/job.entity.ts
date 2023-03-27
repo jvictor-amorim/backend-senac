@@ -6,4 +6,5 @@ export class Job {
     active: boolean;
     quantity: number;
     place: string;
+    courseId: string;
 }
