@@ -28,6 +28,9 @@ model User {
 
 model Jobs {
   id           String @id @default(uuid())
+  courses     Courses @relation(fields: [courseId], references: [id])
+  courseId     String
+
   enterprise   String 
   owner        String 
   description  String
@@ -37,6 +40,21 @@ model Jobs {
   place        String  
 
   @@map("jobs") 
+}
+
+model Courses{
+  id           String @id @default(uuid())
+
+  name         String 
+  level        String
+  modality     String
+  duration     String
+  description  String
+  area         String
+
+  jobs        Jobs[]
+
+  @@map("courses") 
 }
 
 enum Role{
