@@ -32,14 +32,6 @@ export const cursos = [
         area: 'Tecnologia',
     },
     {
-        name: 'Desenvolvimento Web - Front End',
-        description: 'Curso profissionalizante em Front-End',
-        level: 'Profissionalizante',
-        modality: 'EAD',
-        duration: '6 meses',
-        area: 'Tecnologia',
-    },
-    {
         name: 'Desenvolvimento de Jogos Digitais',
         description: 'Curso de bacharelado em Jogos Digitais',
         level: 'Bacharelado',
