@@ -46,6 +46,18 @@ export class JobsService {
     }
 }
 
+  async findByCourse(courseId: string) {
+    try {
+      return await this.prisma.jobs.findMany({
+        where: {
+          courseId: courseId,
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+}
+
   async update(id: number, updateJobDto: UpdateJobDto) {
     return `This action updates a #${id} job`;
   }
