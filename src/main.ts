@@ -24,6 +24,8 @@ async function bootstrap() {
     )
     .setVersion('1.0')
     .addTag('Usuários')
+    .addTag('Cursos')
+    .addTag('Vagas')
     .addBearerAuth()
     .build();
 

@@ -34,6 +34,11 @@ export class JobsController {
     return this.jobsService.findOne(id);
   }
 
+  @Get(':courseId')
+  findByCourse(@Param('courseId') courseId: string) {
+    return this.jobsService.findByCourse(courseId);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateJobDto: UpdateJobDto) {
     return this.jobsService.update(+id, updateJobDto);
