@@ -13,7 +13,7 @@ export class CreateJobDto extends Job {
 
     @ApiProperty({ example: 'descrição da vaga' })
     @IsString()
-    descripion: string;
+    description: string;
 
     @ApiProperty({ example: 'nome da empresa' })
     published: Date;
@@ -29,6 +29,8 @@ export class CreateJobDto extends Job {
     @ApiProperty({ example: 'descrição da vaga' })
     @IsString()
     place: string;
-
+    
+    @ApiProperty({ example: 'id do curso' })
+    @IsString()
     courseId: string;
 }

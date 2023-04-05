@@ -2,11 +2,11 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
-import { JwtGuard } from 'src/auth/guards/jwt.guard';
-import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { JwtGuard } from '../auth/guards/jwt.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { Role } from 'src/auth/models/role.enum';
+import { Role } from '../auth/models/role.enum';
 
 @ApiTags('Vagas')
 @Controller('jobs')
@@ -34,7 +34,10 @@ export class JobsController {
     return this.jobsService.findOne(id);
   }
 
-  @Get(':courseId')
+   @ApiBearerAuth()
+   @Roles(Role.SENAC)
+   @UseGuards(JwtGuard, RolesGuard)
+  @Get('/course/:courseId')
   findByCourse(@Param('courseId') courseId: string) {
     return this.jobsService.findByCourse(courseId);
   }

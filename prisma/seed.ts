@@ -3,10 +3,16 @@ import {usuarios} from './users';
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt'
 import { cursos } from './courses';
+import { jobs } from './jobs'
 
 const prisma = new PrismaClient();
 
 async function main(){
+    // for(const job of jobs){
+    //     await prisma.jobs.create({
+    //         data: job,
+    //     })
+    // }
     for(const curso of cursos){
         await prisma.courses.create({
             data: curso,
