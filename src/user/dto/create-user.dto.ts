@@ -38,4 +38,7 @@ export class CreateUserDto extends User {
   @IsString()
   courseId: string;
 
+  @ApiProperty({example: true})
+  @IsBoolean()
+  status: boolean;
 }

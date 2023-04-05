@@ -29,6 +29,11 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+  @Get('/monitoring/:courseId')
+  monitoring(@Param('courseId') courseId: string) {
+    return this.userService.monitoring(courseId);
+  }
+
   @ApiBearerAuth()
   @Roles(Role.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)

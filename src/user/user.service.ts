@@ -19,7 +19,7 @@ export class UserService {
 
     const createdUser = await this.prisma.user.create(
       {
-        data: {...user, cnpj: ''},
+        data: {...user, cnpj: '', status: user.status},
       }
       );
     
@@ -27,6 +27,19 @@ export class UserService {
       ...createdUser,
       password: undefined,
     };
+  }
+
+  async monitoring(courseId: string) {
+    try {
+      return await this.prisma.user.findMany({
+        where: {
+          status: true,
+          courseId: courseId
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   // async createAdm(createUserDto: CreateAdminDto) {

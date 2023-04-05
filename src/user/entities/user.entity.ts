@@ -10,6 +10,7 @@ export class User {
   address: string;
   phone: string;
   courseId: string;
+  status: boolean;
   role?: Role = Role.USER;
 }
 

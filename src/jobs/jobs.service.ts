@@ -95,7 +95,7 @@ export class JobsService {
     } catch (error) {
       console.log(error);
     }
-}
+  }
 
   async update(id: number, updateJobDto: UpdateJobDto) {
     return `This action updates a #${id} job`;
