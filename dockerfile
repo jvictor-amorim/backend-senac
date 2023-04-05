@@ -1,24 +1,18 @@
-FROM node:16
+FROM node:18-alpine
+
+WORKDIR /usr/src/app
 
 ENV JWT_SECRET 007 
 ENV DATABASE_URL postgres://root:uMamxGi6XNYVqCuDDeYQ4ZdrclWXpwYs@dpg-cg19qrd269vfsnrln1kg-a.oregon-postgres.render.com/db_transformacao_digital_senac
 
-RUN apt-get update
+RUN yarn
 
-RUN npm i
+RUN yarn global add @nestjs/cli
 
-RUN npm i -g @nestjs/cli
+RUN yarn add @nestjs/passport @nestjs/jwt bcrypt class-validator class-transformer passport passport-jwt passport-local
 
-RUN npm i @nestjs/passport @nestjs/jwt bcrypt class-validator class-transformer passport passport-jwt passport-local
+RUN yarn add @nestjs/swagger swagger-ui-express
 
-RUN npm install --save @nestjs/swagger swagger-ui-express
+COPY . .
 
-WORKDIR /home/node/app
-
-COPY package*.json ./
-
-USER root
-
-RUN npm install
-
-COPY --chown=node:node . .
+EXPOSE 8000

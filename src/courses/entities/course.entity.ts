@@ -8,6 +8,4 @@ export class Course {
     duration: string;
     description: string;
     area: string;
-    jobs: Jobs[];
-    users: User[];
 }
