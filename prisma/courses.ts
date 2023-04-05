@@ -1,5 +1,6 @@
 export const cursos = [
     {
+        id: '8a63260c-f948-415b-a05e-3714f67e7ace',
         name: 'Administração',
         description: 'Curso de Bacharelado em Administração',
         level: 'Graduação',

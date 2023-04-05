@@ -5,13 +5,11 @@ export class User {
   readonly id?: string;
   email: string;
   password: string;
-  firstname: string;
-  lastname?: string;
+  name: string;
   cpf: string;
-  adress: string;
-  vagas: boolean;
-  shared: boolean;
-  published: boolean;
-  role?: Role;
+  address: string;
+  phone: string;
+  courseId: string;
+  role?: Role = Role.USER;
 }
 
