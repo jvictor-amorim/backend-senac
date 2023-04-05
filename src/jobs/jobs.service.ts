@@ -2,14 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { HttpException } from '@nestjs/common';
+import { User } from 'src/user/entities/user.entity';
+const jwt = require('jsonwebtoken');
 
 @Injectable()
 export class JobsService {
   constructor(private readonly prisma: PrismaService){}
   async create(createJobDto: CreateJobDto) {
-    const curso = await this.prisma.courses.findUnique({where:{id: createJobDto.courseId}});
+    const course = await this.prisma.courses.findUnique({where:{id: createJobDto.courseId}});
     const job = {
-      ...createJobDto, courseId: curso.id
+      ...createJobDto, courseId: course.id
     }
 
     const data = new Date();
@@ -26,24 +29,40 @@ export class JobsService {
     
   }
 
-  async create_user_job(id_user: string, id_job: string ) {
-    const curso = await this.prisma.courses.findUnique({where:{id: createJobDto.courseId}});
-    const job = {
-      ...createJobDto, courseId: curso.id
+  async findByIdUser(id: string) {
+    const finds = await this.prisma.user.findUnique({where: {id}});
+    return finds;
+  }
+
+  async myUser (token: string) {
+    try{
+      const userId = jwt.verify(token, process.env.JWT_SECRET, function(err: any, decoded: any) {
+          const userId = decoded.sub
+          return userId
+      });
+      return await this.prisma.user.findUnique({where: {id: userId}, select:
+        {id: true}
+      })
+    } catch (error) {
+       console.log(error)
     }
+  }
 
-    const data = new Date();
+  async create_user_job(id_user: string, id_job: string, token: string) {
+    const job = await this.findOne(id_job)
+    const user = await this.findByIdUser(id_user)
 
-    const br = new Date(data.setHours(data.getHours() - 3));
+    let info_user = await this.findByIdUser(token).then((res) => {
+      if(res['data']['type'] === 'success') return res['data']['data'].id
+    }).catch((error)=> {
+       throw new HttpException('User not found', 404)
+    })
 
-    const created = await this.prisma.jobs.create(
+    return this.prisma.userJobs.create(
       {
-        data: {...job, published: br, description: job.descripion},
+        data: {userId: user.id, jobsId: job.id},
       }
-    );
-
-    return created;
-    
+    )
   }
 
   async findAll() {

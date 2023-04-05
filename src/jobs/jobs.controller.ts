@@ -48,4 +48,9 @@ export class JobsController {
   remove(@Param('id') id: string) {
     return this.jobsService.remove(+id);
   }
+
+  @Get('user/:id')
+  find_token_user(@Param('id') id: string) {
+    return this.jobsService.myUser(id)
+  }
 }
