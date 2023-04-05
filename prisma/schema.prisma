@@ -10,18 +10,18 @@ datasource db {
 
 model User {
   id String @id @default(uuid())
+  courses     Courses @relation(fields: [courseId], references: [id])
+  courseId     String
 
   email    String @unique
-  cpf      String @unique
-  adress   String
+  cpf      String 
+  cnpj     String 
+  address  String
   password String
-  vagas    Boolean
-  shared   Boolean
-  published Boolean
-
-  firstname String
-  lastname String
+  name     String
+  phone    String
   role Role @default(USER)
+
   @@map("users")
 
 }
@@ -53,6 +53,7 @@ model Courses{
   area         String
 
   jobs        Jobs[]
+  users       User[]
 
   @@map("courses") 
 }

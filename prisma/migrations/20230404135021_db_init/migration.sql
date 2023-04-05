@@ -4,15 +4,14 @@ CREATE TYPE "_Role" AS ENUM ('USER', 'ENTERPRISE', 'SENAC', 'ADMIN');
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
+    "courseId" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "cpf" TEXT NOT NULL,
-    "adress" TEXT NOT NULL,
+    "cnpj" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "vagas" BOOLEAN NOT NULL,
-    "shared" BOOLEAN NOT NULL,
-    "published" BOOLEAN NOT NULL,
-    "firstname" TEXT NOT NULL,
-    "lastname" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
     "role" "_Role" NOT NULL DEFAULT 'USER',
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
@@ -49,8 +48,8 @@ CREATE TABLE "courses" (
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
--- CreateIndex
-CREATE UNIQUE INDEX "users_cpf_key" ON "users"("cpf");
+-- AddForeignKey
+ALTER TABLE "users" ADD CONSTRAINT "users_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "courses"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "jobs" ADD CONSTRAINT "jobs_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "courses"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

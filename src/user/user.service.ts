@@ -19,7 +19,7 @@ export class UserService {
 
     const createdUser = await this.prisma.user.create(
       {
-        data: {...user, lastname: ''},
+        data: {...user, cnpj: ''},
       }
       );
     
@@ -29,23 +29,23 @@ export class UserService {
     };
   }
 
-  async createAdm(createUserDto: CreateAdminDto) {
-    const user = {
-      ...createUserDto,
-      password: await bcrypt.hash(createUserDto.password, 10),
-    }
+  // async createAdm(createUserDto: CreateAdminDto) {
+  //   const user = {
+  //     ...createUserDto,
+  //     password: await bcrypt.hash(createUserDto.password, 10),
+  //   }
 
-    const createdUser = await this.prisma.user.create(
-      {
-        data: {...user, lastname: ''},
-      }
-      );
+  //   const createdUser = await this.prisma.user.create(
+  //     {
+  //       data: {...user,},
+  //     }
+  //     );
     
-    return {
-      ...createdUser,
-      password: undefined,
-    };
-  }
+  //   return {
+  //     ...createdUser,
+  //     password: undefined,
+  //   };
+  // }
 
   async findAll() {
     const finds = await this.prisma.user.findMany();
@@ -77,8 +77,7 @@ export class UserService {
     },
     select: {
       email:true,
-      firstname: true,
-      lastname:true
+      name: true,
     }
     });
     
@@ -117,6 +116,6 @@ export class UserService {
       }
     })
     
-    return `${user.firstname} ${user.lastname} foi removido do sistema!`;
+    return `${user.name} foi removido do sistema!`;
   }
 }

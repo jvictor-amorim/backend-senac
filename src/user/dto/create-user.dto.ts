@@ -20,7 +20,7 @@ export class CreateUserDto extends User {
 
   @ApiProperty({example: 'João da Silva Sauros'})
   @IsString()
-  firstname: string;
+  name: string;
   
   @ApiProperty({example: '19909882712'})
   @IsString()
@@ -28,18 +28,14 @@ export class CreateUserDto extends User {
 
   @ApiProperty({example: 'Rua dos bobos, 0'})
   @IsString()
-  adress: string;
+  address: string;
 
-  @ApiProperty({example: true})
-  @IsBoolean()
-  vagas: boolean;
+  @ApiProperty({example: '(81) 98765-4321'})
+  @IsString()
+  phone: string;
 
-  @ApiProperty({example: true})
-  @IsBoolean()
-  shared: boolean;
-
-  @ApiProperty({example: true})
-  @IsBoolean()
-  published: boolean;
+  @ApiProperty({example: '3fb2818b-bc43-4f34-ba31-8f96a5ab8372'})
+  @IsString()
+  courseId: string;
 
 }
