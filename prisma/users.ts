@@ -11,6 +11,7 @@ export const usuarios = [
         password: 'Adm001',
         name: 'System',
         phone: '(81) 98765-4321',
+        status: false,
         role: Role.ADMIN,
     },
     {
@@ -22,6 +23,7 @@ export const usuarios = [
         password: 'Senac001',
         name: 'Funcionario',
         phone: '(81) 98765-4321',
+        status: true,
         role: Role.SENAC,
     },
     {
@@ -33,6 +35,7 @@ export const usuarios = [
         password: 'Enterprise001',
         name: 'Enterprise',
         phone: '(81) 98765-4321',
+        status: true,
         role: Role.ENTERPRISE,
     },
     {
@@ -44,6 +47,7 @@ export const usuarios = [
         password: 'User001',
         name: 'User',
         phone: '(81) 98765-4321',
+        status: true,
         role: Role.USER,
     }
 ]

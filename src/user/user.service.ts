@@ -6,6 +6,10 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import * as bcrypt from 'bcrypt';
 import { CreateAdminDto } from './dto/create-admin.dto';
+const nodemailer = require("nodemailer");
+//const SMTP_CONFIG = require("../../config/smtp");
+import { SMTP_CONFIG } from '../../config/smtp'
+import { CreateMailDto } from './dto/create-mail.dto';
 
 @Injectable()
 export class UserService {
@@ -19,7 +23,7 @@ export class UserService {
 
     const createdUser = await this.prisma.user.create(
       {
-        data: {...user, cnpj: ''},
+        data: {...user, cnpj: '', status: user.status},
       }
       );
     
@@ -27,6 +31,58 @@ export class UserService {
       ...createdUser,
       password: undefined,
     };
+  }
+
+  async transporter (){ 
+    return nodemailer.createTransport({
+      host: process.env.MAIL_HOST,
+      port: process.env.MAIL_PORT,
+      secure: false,
+      auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    })
+  }
+  
+  async mail(emailDto: CreateMailDto){
+    const course = await this.prisma.courses.findMany({
+      where: {
+        id: emailDto.courseId,
+      }
+    })
+    const user = await this.monitoring(course[0].id)
+    const emails = user.map((el) => el.email)
+
+    const transporter_mail = await this.transporter();
+    try {
+      const mailOptions = {
+        text: emailDto.text,
+        from: 'Senac(NÃO RESPONDA!) <' + process.env.MAIL_SENAC,
+        to: emails,
+        subject: emailDto.subject,
+      };
+      transporter_mail.sendMail(mailOptions, (err: any, info: any) => {});
+    } catch (error) {
+      console.log("Error in send email: " + error)
+    }
+  }
+
+  async monitoring(courseId: string) {
+    try {
+      return await this.prisma.user.findMany({
+        where: {
+          status: true,
+          courseId: courseId
+        },
+        select: {name: true, email: true, phone: true, address: true, cpf: true}
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   // async createAdm(createUserDto: CreateAdminDto) {

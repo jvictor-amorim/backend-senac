@@ -20,8 +20,10 @@ model User {
   password String
   name     String
   phone    String
+  status   Boolean
   role Role @default(USER)
 
+  jobs         UserJobs[]
   @@map("users")
 
 }
@@ -39,7 +41,17 @@ model Jobs {
   quantity     Int
   place        String  
 
+  user         UserJobs[]    
   @@map("jobs") 
+}
+
+model UserJobs {
+  user           User @relation(fields: [userId], references: [id])
+  userId         String
+  jobs           Jobs @relation(fields: [jobsId], references: [id])
+  jobsId         String
+
+  @@id([userId, jobsId])
 }
 
 model Courses{

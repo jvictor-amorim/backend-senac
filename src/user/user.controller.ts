@@ -10,6 +10,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
+import { CreateMailDto } from './dto/create-mail.dto';
 
 @ApiTags('Usuários')
 @Controller('users')
@@ -27,6 +28,11 @@ export class UserController {
   @Post('secret')
   createAdm(@Body() createUserDto: CreateAdminDto) {
     return this.userService.create(createUserDto);
+  }
+
+  @Get('/monitoring/:courseId')
+  monitoring(@Param('courseId') courseId: string) {
+    return this.userService.monitoring(courseId);
   }
 
   @ApiBearerAuth()
@@ -75,5 +81,10 @@ export class UserController {
   @Delete('secret/:id')
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
+  }
+
+  @Post('/mail')
+  send_email(@Body() emailDto: CreateMailDto) {
+    return this.userService.mail(emailDto);
   }
 }

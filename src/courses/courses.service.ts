@@ -6,23 +6,57 @@ import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class CoursesService {
   constructor(private readonly prisma: PrismaService) {}
-  create(createCourseDto: CreateCourseDto) {
-    return 'This action adds a new course';
+  async create(createCourseDto: CreateCourseDto) {
+    const created = await this.prisma.courses.create(
+      {
+        data: {...createCourseDto}
+      } 
+    );
+
+    return created;
   }
 
   findAll() {
-    return this.prisma.courses.findMany();
+    try{
+      return this.prisma.courses.findMany();
+    }catch(e){
+      console.log(e)
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} course`;
+  async findOne(id: string) {
+    try{
+      return await this.prisma.courses.findUnique({
+        where: {
+          id: id
+        }
+    })
+    }catch(e){
+      console.log(e)
+    }
   }
 
-  update(id: number, updateCourseDto: UpdateCourseDto) {
-    return `This action updates a #${id} course`;
+  async update(id: string, updateCourseDto: UpdateCourseDto) {
+    try{
+      const course = await this.findOne(id)
+
+      return await this.prisma.courses.update({
+        where: {id: course.id},
+        data: updateCourseDto,
+      })
+
+    }catch(e){
+      console.log(e)
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} course`;
+  async remove(id: string) {
+    const course = await this.findOne(id);
+      await this.prisma.courses.delete({
+        where: {
+          id: course.id,
+        }
+      })
+    return `${course.name} foi removido do sistema!`;
   }
 }
