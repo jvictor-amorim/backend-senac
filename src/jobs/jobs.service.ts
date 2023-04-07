@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { HttpException } from '@nestjs/common';
-import { User } from 'src/user/entities/user.entity';
-const jwt = require('jsonwebtoken');
+import { UserService } from 'src/user/user.service';
+import { CreateUserJobDto } from './dto/create-user-job.dto';
+
 
 @Injectable()
 export class JobsService {
-  constructor(private readonly prisma: PrismaService){}
+  constructor(private readonly prisma: PrismaService, private readonly userService: UserService){}
   async create(createJobDto: CreateJobDto) {
     const course = await this.prisma.courses.findUnique({where:{id: createJobDto.courseId}});
     const job = {
@@ -34,29 +34,9 @@ export class JobsService {
     return finds;
   }
 
-  async myUser (token: string) {
-    try{
-      const userId = jwt.verify(token, process.env.JWT_SECRET, function(err: any, decoded: any) {
-          const userId = decoded.sub
-          return userId
-      });
-      return await this.prisma.user.findUnique({where: {id: userId}, select:
-        {id: true}
-      })
-    } catch (error) {
-       console.log(error)
-    }
-  }
-
-  async create_user_job(id_user: string, id_job: string, token: string) {
-    const job = await this.findOne(id_job)
-    const user = await this.findByIdUser(id_user)
-
-    let info_user = await this.findByIdUser(token).then((res) => {
-      if(res['data']['type'] === 'success') return res['data']['data'].id
-    }).catch((error)=> {
-       throw new HttpException('User not found', 404)
-    })
+  async create_user_job(userJobDto: CreateUserJobDto) {
+    const job = await this.findOne(userJobDto.id_job)
+    const user = await this.userService.findByUserToken({'authorization': userJobDto.token})
 
     return this.prisma.userJobs.create(
       {
@@ -97,6 +77,39 @@ export class JobsService {
     }
   }
 
+  async findByUserJob(jobId: string) {
+    try {
+      const user_ids = await this.prisma.userJobs.findMany({
+        where: {
+          jobsId: jobId
+        },
+        select: {
+          userId: true
+        }
+      });
+
+      let data = []
+      for (const id of user_ids) {
+        const user_Data = await this.userService.findById(id.userId)
+        const course_data = await this.prisma.courses.findUnique({
+          where: {
+            id: user_Data.courseId
+          }
+        })
+        data.push({
+          "name": user_Data.name,
+          "course_name": course_data.name,
+          "email": user_Data.email,
+          "phone": user_Data.phone,
+          "address": user_Data.address,  
+        })
+      }
+      return data
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
   async update(id: number, updateJobDto: UpdateJobDto) {
     return `This action updates a #${id} job`;
   }

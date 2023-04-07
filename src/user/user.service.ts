@@ -10,6 +10,9 @@ const nodemailer = require("nodemailer");
 //const SMTP_CONFIG = require("../../config/smtp");
 import { SMTP_CONFIG } from '../../config/smtp'
 import { CreateMailDto } from './dto/create-mail.dto';
+import { jobs } from 'prisma/jobs';
+import { JobsService } from 'src/jobs/jobs.service';
+const jwt = require('jsonwebtoken');
 
 @Injectable()
 export class UserService {
@@ -54,6 +57,7 @@ export class UserService {
         id: emailDto.courseId,
       }
     })
+    
     const user = await this.monitoring(course[0].id)
     const emails = user.map((el) => el.email)
 
@@ -70,6 +74,7 @@ export class UserService {
       console.log("Error in send email: " + error)
     }
   }
+  
 
   async monitoring(courseId: string) {
     try {
@@ -118,6 +123,26 @@ export class UserService {
     const finds = await this.prisma.user.findUnique({where: {email}});
     
     return finds;
+  }
+
+  async myUser (token: string) {
+    try{
+      const userId = jwt.verify(token, process.env.JWT_SECRET, function(err: any, decoded: any) {
+          const userId = decoded.sub
+          return userId
+      });
+      return await this.prisma.user.findUnique({where: {id: userId}, select:
+        {id: true, name: true, email: true, cpf: true, cnpj: true, address: true, phone: true, status: true, role: true, courseId: true}
+      })
+    } catch (error) {
+       console.log(error)
+    }
+  }
+
+  async findByUserToken(headers: {}) {
+    if(headers["authorization"].includes('Bearer')) return await this.myUser(headers["authorization"].split("Bearer ")[1].trim())
+    return await this.myUser(headers["authorization"].trim())
+
   }
 
   async findById(id: string) {
@@ -175,3 +200,19 @@ export class UserService {
     return `${user.name} foi removido do sistema!`;
   }
 }
+
+
+
+// {
+//   id: 'fcdf6e72-0580-45f3-9756-7bae9d61da6c',
+//   courseId: '8a63260c-f948-415b-a05e-3714f67e7ace',
+//   email: 'admin@admin.com',
+//   cpf: '12345678901',
+//   cnpj: '',
+//   address: 'Rua dos bobos, 0',
+//   password: '$2b$10$zkYvjwrwCAs21nPllEH60.XXxseeLRMyyRZtgUa5yFQ3itPCgewIK',
+//   name: 'System',
+//   phone: '(81) 98765-4321',
+//   status: false,
+//   role: 'ADMIN'
+// }

@@ -7,6 +7,7 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Role } from 'src/auth/models/role.enum';
+import { CreateUserJobDto } from './dto/create-user-job.dto';
 
 @ApiTags('Vagas')
 @Controller('jobs')
@@ -49,8 +50,14 @@ export class JobsController {
     return this.jobsService.remove(+id);
   }
 
-  @Get('user/:id')
-  find_token_user(@Param('id') id: string) {
-    return this.jobsService.myUser(id)
+  @Post('/create_user_job')
+  create_user_job(@Body() userJobDto: CreateUserJobDto) {
+    console.log(userJobDto)
+    return this.jobsService.create_user_job(userJobDto);
+  }
+
+  @Get('/job_user/:jobId')
+  findByUserJob(@Param('jobId') jobId: string) {
+    return this.jobsService.findByUserJob(jobId);
   }
 }
