@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, Req } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -54,9 +55,10 @@ export class UserController {
   @ApiBearerAuth()
   @Roles(Role.ADMIN, Role.SENAC)
   @UseGuards(JwtGuard, RolesGuard)
-  @Get('/secret/:id')
-  findById(@Param('id') id: string) {
-    return this.userService.findById(id);
+  @Post('/secret_user_token')
+  findByUserToken(@Req() request: Request) {
+    const headers = request.headers;
+    return this.userService.findByUserToken(headers);
   }
 
   @ApiBearerAuth()
