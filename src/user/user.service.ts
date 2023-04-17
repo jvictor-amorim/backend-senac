@@ -9,6 +9,9 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateEnterpriseDto } from './dto/create-enterprise.dto';
+import { CreateSenacDto } from './dto/create-senac.dto';
+import { UpdateEnterpriseDto } from './dto/update-enterprise.dto';
+import { UpdateSenacDto } from './dto/update-senac.dto';
 const nodemailer = require("nodemailer");
 const jwt = require('jsonwebtoken');
 
@@ -124,6 +127,24 @@ export class UserService {
     };
   }
 
+  async createSenac(createUserDto: CreateSenacDto) {
+    const user = {
+      ...createUserDto,
+      password: await bcrypt.hash(createUserDto.password, 10),
+    }
+
+    const createdUser = await this.prisma.user.create(
+      {
+        data: {...user, role: Role.SENAC, cnpj: ''},
+      }
+      );
+    
+    return {
+      ...createdUser,
+      password: undefined,
+    };
+  }
+
   async findAll() {
     const finds = await this.prisma.user.findMany();
 
@@ -203,7 +224,17 @@ export class UserService {
     return attUser;
   }
 
-  async updateAdmin(id: string, updateUserDto: UpdateAdminDto) {
+  async updateEnterprise(id: string, updateUserDto: UpdateEnterpriseDto) {
+    const user = await this.findById(id);
+    
+    const attUser = await this.prisma.user.update({
+      where: {id: user.id},
+      data: updateUserDto,
+    })
+    return attUser;
+  }
+
+  async updateSenac(id: string, updateUserDto: UpdateSenacDto) {
     const user = await this.findById(id);
     
     const attUser = await this.prisma.user.update({
@@ -226,19 +257,3 @@ export class UserService {
     return `${user.name} foi removido do sistema!`;
   }
 }
-
-
-
-// {
-//   id: 'fcdf6e72-0580-45f3-9756-7bae9d61da6c',
-//   courseId: '8a63260c-f948-415b-a05e-3714f67e7ace',
-//   email: 'admin@admin.com',
-//   cpf: '12345678901',
-//   cnpj: '',
-//   address: 'Rua dos bobos, 0',
-//   password: '$2b$10$zkYvjwrwCAs21nPllEH60.XXxseeLRMyyRZtgUa5yFQ3itPCgewIK',
-//   name: 'System',
-//   phone: '(81) 98765-4321',
-//   status: false,
-//   role: 'ADMIN'
-// }
