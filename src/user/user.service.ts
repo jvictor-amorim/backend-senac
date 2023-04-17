@@ -1,17 +1,14 @@
 /* eslint-disable prettier/prettier */
-import { PrismaService } from './../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UpdateAdminDto } from './dto/update-admin.dto';
 import * as bcrypt from 'bcrypt';
+import { Role } from 'src/auth/models/role.enum';
+import { PrismaService } from './../prisma/prisma.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
-const nodemailer = require("nodemailer");
-//const SMTP_CONFIG = require("../../config/smtp");
-import { SMTP_CONFIG } from '../../config/smtp'
 import { CreateMailDto } from './dto/create-mail.dto';
-import { jobs } from 'prisma/jobs';
-import { JobsService } from 'src/jobs/jobs.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateAdminDto } from './dto/update-admin.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+const nodemailer = require("nodemailer");
 const jwt = require('jsonwebtoken');
 
 @Injectable()
@@ -90,7 +87,25 @@ export class UserService {
     }
   }
 
-  // async createAdm(createUserDto: CreateAdminDto) {
+  async createAdm(createUserDto: CreateAdminDto) {
+    const user = {
+      ...createUserDto,
+      password: await bcrypt.hash(createUserDto.password, 10),
+    }
+
+    const createdUser = await this.prisma.user.create(
+      {
+        data: {...user, role: Role.ADMIN, cnpj: ''},
+      }
+      );
+    
+    return {
+      ...createdUser,
+      password: undefined,
+    };
+  }
+
+  // async createEnterprise(createUserDto: CreateAdminDto) {
   //   const user = {
   //     ...createUserDto,
   //     password: await bcrypt.hash(createUserDto.password, 10),
@@ -98,7 +113,7 @@ export class UserService {
 
   //   const createdUser = await this.prisma.user.create(
   //     {
-  //       data: {...user,},
+  //       data: {...user, role: Role.ADMIN},
   //     }
   //     );
     
@@ -173,6 +188,16 @@ export class UserService {
     const attUser = await this.prisma.user.update({
       where: {id: user.id},
       data: updateUserDto,
+    })
+    return attUser;
+  }
+
+  async updateAdm(id: string, updateAdminDto: UpdateAdminDto) {
+    const user = await this.findById(id);
+    
+    const attUser = await this.prisma.user.update({
+      where: {id: user.id},
+      data: updateAdminDto,
     })
     return attUser;
   }
