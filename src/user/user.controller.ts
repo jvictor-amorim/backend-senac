@@ -12,6 +12,10 @@ import { UpdateAdminDto } from './dto/update-admin.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 import { CreateMailDto } from './dto/create-mail.dto';
+import { CreateSenacDto } from './dto/create-senac.dto';
+import { CreateEnterpriseDto } from './dto/create-enterprise.dto';
+import { UpdateEnterpriseDto } from './dto/update-enterprise.dto';
+import { UpdateSenacDto } from './dto/update-senac.dto';
 
 @ApiTags('Usuários')
 @Controller('users')
@@ -26,7 +30,23 @@ export class UserController {
   @ApiBearerAuth()
   @Roles(Role.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
-  @Post('secret')
+  @Post('/senac')
+  createSenac(@Body() createUserDto: CreateSenacDto) {
+    return this.userService.create(createUserDto);
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Post('/enterprise')
+  createEnterprise(@Body() createUserDto: CreateEnterpriseDto) {
+    return this.userService.create(createUserDto);
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Post('/secret')
   createAdm(@Body() createUserDto: CreateAdminDto) {
     return this.userService.create(createUserDto);
   }
@@ -70,6 +90,22 @@ export class UserController {
   }
 
   @ApiBearerAuth()
+  @Roles(Role.ADMIN, Role.ENTERPRISE)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Patch(':id')
+  updateEnterprise(@Param('id') id: string, @Body() updateUserDto: UpdateEnterpriseDto) {
+    return this.userService.update(id, updateUserDto);
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.ADMIN, Role.SENAC)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Patch(':id')
+  updateSenac(@Param('id') id: string, @Body() updateUserDto: UpdateSenacDto) {
+    return this.userService.update(id, updateUserDto);
+  }
+
+  @ApiBearerAuth()
   @Roles(Role.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Patch('secret/:id')
@@ -85,6 +121,9 @@ export class UserController {
     return this.userService.remove(id);
   }
 
+  @ApiBearerAuth()
+  @Roles(Role.ADMIN, Role.SENAC)
+  @UseGuards(JwtGuard, RolesGuard)
   @Post('/mail')
   send_email(@Body() emailDto: CreateMailDto) {
     return this.userService.mail(emailDto);

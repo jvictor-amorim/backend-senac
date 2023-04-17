@@ -1,9 +1,7 @@
-/* eslint-disable prettier/prettier */
-
 import { Role } from '@prisma/client';
 import {User} from '../entities/user.entity'
 
-export class CreateAdminDto extends User {
+export class CreateSenacDto extends User {
   email: string;
   password: string;
   name: string;
