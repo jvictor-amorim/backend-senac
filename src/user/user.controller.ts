@@ -12,6 +12,8 @@ import { UpdateAdminDto } from './dto/update-admin.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 import { CreateMailDto } from './dto/create-mail.dto';
+import { CreateSenacDto } from './dto/create-senac.dto';
+import { CreateEnterpriseDto } from './dto/create-enterprise.dto';
 
 @ApiTags('Usuários')
 @Controller('users')
@@ -26,7 +28,23 @@ export class UserController {
   @ApiBearerAuth()
   @Roles(Role.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
-  @Post('secret')
+  @Post('/senac')
+  createSenac(@Body() createUserDto: CreateSenacDto) {
+    return this.userService.create(createUserDto);
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Post('/enterprise')
+  createEnterprise(@Body() createUserDto: CreateEnterpriseDto) {
+    return this.userService.create(createUserDto);
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Post('/secret')
   createAdm(@Body() createUserDto: CreateAdminDto) {
     return this.userService.create(createUserDto);
   }
