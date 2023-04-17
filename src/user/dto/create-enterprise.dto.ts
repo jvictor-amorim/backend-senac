@@ -1,13 +1,11 @@
-/* eslint-disable prettier/prettier */
-
 import { Role } from '@prisma/client';
 import {User} from '../entities/user.entity'
 
-export class CreateAdminDto extends User {
+export class CreateEnterpriseDto extends User {
   email: string;
   password: string;
   name: string;
-  cpf: string;
+  cnpj: string;
   phone: string;
   role: Role;
 }
