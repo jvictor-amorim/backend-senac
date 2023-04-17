@@ -8,6 +8,7 @@ import { CreateMailDto } from './dto/create-mail.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateEnterpriseDto } from './dto/create-enterprise.dto';
 const nodemailer = require("nodemailer");
 const jwt = require('jsonwebtoken');
 
@@ -105,23 +106,23 @@ export class UserService {
     };
   }
 
-  // async createEnterprise(createUserDto: CreateAdminDto) {
-  //   const user = {
-  //     ...createUserDto,
-  //     password: await bcrypt.hash(createUserDto.password, 10),
-  //   }
+  async createEnterprise(createUserDto: CreateEnterpriseDto) {
+    const user = {
+      ...createUserDto,
+      password: await bcrypt.hash(createUserDto.password, 10),
+    }
 
-  //   const createdUser = await this.prisma.user.create(
-  //     {
-  //       data: {...user, role: Role.ADMIN},
-  //     }
-  //     );
+    const createdUser = await this.prisma.user.create(
+      {
+        data: {...user, role: Role.ENTERPRISE, cpf: ''},
+      }
+      );
     
-  //   return {
-  //     ...createdUser,
-  //     password: undefined,
-  //   };
-  // }
+    return {
+      ...createdUser,
+      password: undefined,
+    };
+  }
 
   async findAll() {
     const finds = await this.prisma.user.findMany();
