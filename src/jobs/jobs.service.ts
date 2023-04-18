@@ -54,7 +54,6 @@ export class JobsService {
             id: item.courseId
           }
         })
-        delete(item.courseId)
         item["course_name"] = course.name
       }
       return jobs
