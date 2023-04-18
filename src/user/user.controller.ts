@@ -38,7 +38,7 @@ export class UserController {
   @ApiBearerAuth()
   @Roles(Role.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
-  @Post('/recoverPasswords')
+  @Post('/recoverPasswords/:userId')
   recoverPasswords(@Param('userId') userId: string) {
     return this.userService.recoverPassword(userId);
   }
