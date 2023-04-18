@@ -29,5 +29,4 @@ export class CreateSenacDto extends User {
   @IsString()
   phone: string;
   
-  role: Role;
 }

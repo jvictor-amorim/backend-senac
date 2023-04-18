@@ -27,13 +27,17 @@ export class UserService {
 
     const createdUser = await this.prisma.user.create(
       {
-        data: {...user, cnpj: '', status: user.status},
+        data: {...user, cnpj: '', status: user.status, role: Role.USER},
       }
       );
     
     return {
       ...createdUser,
+      id: undefined,
       password: undefined,
+      role: undefined,
+      cnpj: undefined,
+      courseId: undefined,
     };
   }
 
@@ -134,13 +138,15 @@ export class UserService {
 
     const createdUser = await this.prisma.user.create(
       {
-        data: {...user, role: Role.ADMIN, cnpj: ''},
+        data: {...user, role: Role.ADMIN, cnpj: 'NA', address: 'NA', status: false, courseId: '8a63260c-f948-415b-a05e-3714f67e7ace'},
       }
       );
     
     return {
       ...createdUser,
       password: undefined,
+      status: undefined,
+      courseId: undefined,
     };
   }
 
@@ -152,13 +158,19 @@ export class UserService {
 
     const createdUser = await this.prisma.user.create(
       {
-        data: {...user, role: Role.ENTERPRISE, cpf: ''},
+        data: {...user, role: Role.ENTERPRISE, cpf: 'NA', address: 'NA', status: false, courseId: '8a63260c-f948-415b-a05e-3714f67e7ace'},
       }
       );
     
     return {
       ...createdUser,
+      id: undefined,
       password: undefined,
+      role: undefined,
+      cpf: undefined,
+      address: undefined,
+      status: undefined,
+      courseId: undefined,
     };
   }
 
@@ -170,13 +182,16 @@ export class UserService {
 
     const createdUser = await this.prisma.user.create(
       {
-        data: {...user, role: Role.SENAC, cnpj: ''},
+        data: {...user, role: Role.SENAC, cnpj: 'NA', address: 'NA', status: false, courseId: '8a63260c-f948-415b-a05e-3714f67e7ace'},
       }
       );
     
     return {
       ...createdUser,
+      id: undefined,
       password: undefined,
+      status: undefined,
+      courseId: undefined,
     };
   }
 
