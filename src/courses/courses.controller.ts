@@ -29,9 +29,6 @@ export class CoursesController {
     return this.coursesService.userCourseList();
   }
 
-  @ApiBearerAuth()
-  @Roles(Role.ADMIN, Role.SENAC)
-  @UseGuards(JwtGuard, RolesGuard)
   @Get()
   findAll() {
     return this.coursesService.findAll();
