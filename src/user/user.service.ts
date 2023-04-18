@@ -51,7 +51,43 @@ export class UserService {
       },
     })
   }
-  
+
+  async recoverPassword(userId: string){
+    console.log('asdasdnjasdhakjdh')
+    const user = await this.findById(userId)
+    console.log(user)
+    const password = this.generatePasswordTemp('8')
+    user["password"] = password
+    
+    await this.prisma.user.update({
+      where: {id: user.id},
+      data: user
+    })
+
+    const transporter_mail = await this.transporter();
+    try {
+      const mailOptions = {
+        text: `Sua senha temporaria é ${password}...`,
+        from: 'Senac(NÃO RESPONDA!) <' + process.env.MAIL_SENAC,
+        to: 'vvvvv',
+        subject: 'Recuperação de senha!',
+      };
+      transporter_mail.sendMail(mailOptions, (err: any, info: any) => {});
+    } catch (error) {
+      console.log("Error in send email: " + error)
+    }
+    return `Uma senha temporaria foi envida para o seu email!`
+  }
+
+  generatePasswordTemp(amount: string) {
+    var tempPassword = '';
+    var caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (var i = 0; i < Number(amount); i++) {
+      tempPassword += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+    }
+    return tempPassword;
+  }
+
   async mail(emailDto: CreateMailDto){
     const course = await this.prisma.courses.findMany({
       where: {
@@ -149,6 +185,14 @@ export class UserService {
   async findAll() {
     const finds = await this.prisma.user.findMany();
 
+    for (const item of finds) {
+      const course = await this.prisma.courses.findUnique({
+          where: {
+            id: item.courseId
+          }
+        })
+        item["course_name"] = course.name
+    }
     const findss = finds.map((item) => ({
       ...item,
       password: undefined,

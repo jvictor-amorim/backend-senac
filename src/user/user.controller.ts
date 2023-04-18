@@ -38,6 +38,14 @@ export class UserController {
   @ApiBearerAuth()
   @Roles(Role.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
+  @Post('/recoverPasswords')
+  recoverPasswords(@Param('userId') userId: string) {
+    return this.userService.recoverPassword(userId);
+  }
+
+  @ApiBearerAuth()
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtGuard, RolesGuard)
   @Post('/enterprise')
   createEnterprise(@Body() createUserDto: CreateEnterpriseDto) {
     return this.userService.create(createUserDto);
