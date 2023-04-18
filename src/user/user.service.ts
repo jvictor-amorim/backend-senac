@@ -76,6 +76,7 @@ export class UserService {
     }
   }
   
+ 
 
   async monitoring(courseId: string) {
     try {
@@ -147,6 +148,36 @@ export class UserService {
 
   async findAll() {
     const finds = await this.prisma.user.findMany();
+
+    const findss = finds.map((item) => ({
+      ...item,
+      password: undefined,
+    }));
+    
+    return findss;
+  }
+
+  async findAllStudent() {
+    const finds = await this.prisma.user.findMany({
+      where: {
+        role: 'USER'
+      }
+    });
+
+    const findss = finds.map((item) => ({
+      ...item,
+      password: undefined,
+    }));
+    
+    return findss;
+  }
+
+  async findAllEnterprise() {
+    const finds = await this.prisma.user.findMany({
+      where: {
+        role: 'ENTERPRISE'
+      }
+    });
 
     const findss = finds.map((item) => ({
       ...item,

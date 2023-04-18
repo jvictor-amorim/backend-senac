@@ -20,6 +20,14 @@ export class CoursesController {
   create(@Body() createCourseDto: CreateCourseDto) {
     return this.coursesService.create(createCourseDto);
   }
+  
+  @ApiBearerAuth()
+  @Roles(Role.ADMIN, Role.SENAC)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Get('userCourses')
+  userCourseList() {
+    return this.coursesService.userCourseList();
+  }
 
   @ApiBearerAuth()
   @Roles(Role.ADMIN, Role.SENAC)
@@ -52,4 +60,5 @@ export class CoursesController {
   remove(@Param('id') id: string) {
     return this.coursesService.remove(id);
   }
+
 }

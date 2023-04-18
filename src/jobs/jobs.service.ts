@@ -47,7 +47,17 @@ export class JobsService {
 
   async findAll() {
     try{
-    return await this.prisma.jobs.findMany();
+    const jobs = await this.prisma.jobs.findMany();
+    for (const item of jobs) {
+      const course = await this.prisma.courses.findUnique({
+          where: {
+            id: item.courseId
+          }
+        })
+        delete(item.courseId)
+        item["course_name"] = course.name
+      }
+      return jobs
     } catch (error) {
       console.log(error);
     }
@@ -110,11 +120,26 @@ export class JobsService {
     }
   }
   
-  async update(id: number, updateJobDto: UpdateJobDto) {
-    return `This action updates a #${id} job`;
+  async update(id: string, updateJobDto: UpdateJobDto) {
+    const jobs = await this.findOne(id);
+    
+    const attJobs = await this.prisma.jobs.update({
+      where: {id: jobs.id},
+      data: updateJobDto,
+    })
+
+    return attJobs;
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} job`;
+  async remove(id: string) {
+    const jobs = await this.findOne(id);
+
+    await this.prisma.jobs.delete({
+      where: {
+        id: jobs.id,
+      }
+    })
+    
+    return `Uma vaga foi removida do sistema!`;
   }
 }

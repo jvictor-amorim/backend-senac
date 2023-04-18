@@ -36,6 +36,36 @@ export class CoursesService {
     }
   }
 
+  async userCourseList() {
+    try{
+      let data = []
+      const courses = await this.findAll();
+
+      for (const course of courses) {
+        const countUserCourses = await this.prisma.user.findMany({
+          where: {
+            courseId: course.id
+          }
+        })
+        data.push({
+          "name": course.name,
+          "amount": countUserCourses.length
+        })
+      }
+
+      data = data.sort((a, b) => {
+        if (a.name < b.name)
+          return -1;
+          if (a.name > b.name)
+            return 1;
+          return 0;
+      });
+      return data
+    }catch(e){
+      console.log(e)
+    }
+  }
+
   async update(id: string, updateCourseDto: UpdateCourseDto) {
     try{
       const course = await this.findOne(id)
@@ -59,4 +89,7 @@ export class CoursesService {
       })
     return `${course.name} foi removido do sistema!`;
   }
+
+ 
+  
 }

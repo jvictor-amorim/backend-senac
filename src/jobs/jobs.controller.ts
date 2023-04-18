@@ -51,7 +51,7 @@ export class JobsController {
   @UseGuards(JwtGuard, RolesGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateJobDto: UpdateJobDto) {
-    return this.jobsService.update(+id, updateJobDto);
+    return this.jobsService.update(id, updateJobDto);
   }
 
   @ApiBearerAuth()
@@ -59,7 +59,7 @@ export class JobsController {
   @UseGuards(JwtGuard, RolesGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.jobsService.remove(+id);
+    return this.jobsService.remove(id);
   }
 
   @ApiBearerAuth()

@@ -56,6 +56,16 @@ export class UserController {
     return this.userService.monitoring(courseId);
   }
 
+  @Get('/student')
+  findAllStudent() {
+    return this.userService.findAllStudent();
+  }
+
+  @Get('/enterprise')
+  findAllEnterprise() {
+    return this.userService.findAllEnterprise();
+  }
+
   @ApiBearerAuth()
   @Roles(Role.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
