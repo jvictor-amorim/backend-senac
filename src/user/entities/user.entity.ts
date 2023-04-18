@@ -11,6 +11,6 @@ export class User {
   phone: string;
   courseId: string;
   status: boolean;
-  role?: Role = Role.USER;
+  role?: Role;
 }
 

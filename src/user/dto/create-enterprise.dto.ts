@@ -28,6 +28,4 @@ export class CreateEnterpriseDto extends User {
   @ApiProperty({example: '(81) 98765-4321'})
   @IsString()
   phone: string;
-  
-  role: Role;
 }

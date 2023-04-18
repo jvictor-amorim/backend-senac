@@ -32,7 +32,7 @@ export class UserController {
   @UseGuards(JwtGuard, RolesGuard)
   @Post('/senac')
   createSenac(@Body() createUserDto: CreateSenacDto) {
-    return this.userService.create(createUserDto);
+    return this.userService.createSenac(createUserDto);
   }
 
   @ApiBearerAuth()
@@ -48,7 +48,7 @@ export class UserController {
   @UseGuards(JwtGuard, RolesGuard)
   @Post('/enterprise')
   createEnterprise(@Body() createUserDto: CreateEnterpriseDto) {
-    return this.userService.create(createUserDto);
+    return this.userService.createEnterprise(createUserDto);
   }
 
   @ApiBearerAuth()
@@ -56,7 +56,7 @@ export class UserController {
   @UseGuards(JwtGuard, RolesGuard)
   @Post('/secret')
   createAdm(@Body() createUserDto: CreateAdminDto) {
-    return this.userService.create(createUserDto);
+    return this.userService.createAdm(createUserDto);
   }
 
   @Get('/monitoring/:courseId')

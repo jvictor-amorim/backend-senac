@@ -31,5 +31,4 @@ export class CreateAdminDto extends User {
   @IsString()
   phone: string;
   
-  role: Role;
 }
