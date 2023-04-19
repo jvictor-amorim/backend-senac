@@ -56,8 +56,12 @@ export class UserService {
     })
   }
 
-  async recoverPassword(userId: string){
-    const user = await this.findById(userId)
+  async recoverPassword(email: string){
+    const user = await this.prisma.user.findUnique({
+      where:{
+        email: email
+      }
+    })
     const password = this.generatePasswordTemp('8')
     user["password"] = await bcrypt.hash(password, 10),
     
@@ -267,7 +271,6 @@ export class UserService {
   async findByUserToken(headers: {}) {
     if(headers["authorization"].includes('Bearer')) return await this.myUser(headers["authorization"].split("Bearer ")[1].trim())
     return await this.myUser(headers["authorization"].trim())
-
   }
 
   async findById(id: string) {
@@ -292,8 +295,8 @@ export class UserService {
     };
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    const user = await this.findById(id);
+  async updateStudent(headers: {}, updateUserDto: UpdateUserDto) {
+    const user = await this.findByUserToken(headers);
     
     const attUser = await this.prisma.user.update({
       where: {id: user.id},
@@ -302,8 +305,8 @@ export class UserService {
     return attUser;
   }
 
-  async updateAdm(id: string, updateAdminDto: UpdateAdminDto) {
-    const user = await this.findById(id);
+  async updateAdm(headers: {}, updateAdminDto: UpdateAdminDto) {
+    const user = await this.findByUserToken(headers);
     
     const attUser = await this.prisma.user.update({
       where: {id: user.id},
@@ -312,8 +315,8 @@ export class UserService {
     return attUser;
   }
 
-  async updateEnterprise(id: string, updateUserDto: UpdateEnterpriseDto) {
-    const user = await this.findById(id);
+  async updateEnterprise(headers: {}, updateUserDto: UpdateEnterpriseDto) {
+    const user = await this.findByUserToken(headers);
     
     const attUser = await this.prisma.user.update({
       where: {id: user.id},
@@ -322,8 +325,8 @@ export class UserService {
     return attUser;
   }
 
-  async updateSenac(id: string, updateUserDto: UpdateSenacDto) {
-    const user = await this.findById(id);
+  async updateSenac(headers: {}, updateUserDto: UpdateSenacDto) {
+    const user = await this.findByUserToken(headers);
     
     const attUser = await this.prisma.user.update({
       where: {id: user.id},
