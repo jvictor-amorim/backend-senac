@@ -35,9 +35,6 @@ export class UserController {
     return this.userService.createSenac(createUserDto);
   }
 
-  @ApiBearerAuth()
-  @Roles(Role.ADMIN, Role.USER, Role.SENAC)
-  @UseGuards(JwtGuard, RolesGuard)
   @Post('/recoverPasswords/:email')
   recoverPasswords(@Param('email') email: string) {
     return this.userService.recoverPassword(email);
