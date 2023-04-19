@@ -64,11 +64,17 @@ export class UserController {
     return this.userService.monitoring(courseId);
   }
 
+  @ApiBearerAuth()
+  @Roles(Role.ADMIN, Role.SENAC)
+  @UseGuards(JwtGuard, RolesGuard)
   @Get('/student')
   findAllStudent() {
     return this.userService.findAllStudent();
   }
 
+  @ApiBearerAuth()
+  @Roles(Role.ADMIN, Role.SENAC)
+  @UseGuards(JwtGuard, RolesGuard)
   @Get('/enterprise')
   findAllEnterprise() {
     return this.userService.findAllEnterprise();
