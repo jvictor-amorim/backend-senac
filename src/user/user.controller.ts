@@ -36,11 +36,11 @@ export class UserController {
   }
 
   @ApiBearerAuth()
-  @Roles(Role.ADMIN)
+  @Roles(Role.ADMIN, Role.USER, Role.SENAC)
   @UseGuards(JwtGuard, RolesGuard)
-  @Post('/recoverPasswords/:userId')
-  recoverPasswords(@Param('userId') userId: string) {
-    return this.userService.recoverPassword(userId);
+  @Post('/recoverPasswords/:email')
+  recoverPasswords(@Param('email') email: string) {
+    return this.userService.recoverPassword(email);
   }
 
   @ApiBearerAuth()
@@ -102,33 +102,37 @@ export class UserController {
   @ApiBearerAuth()
   @Roles(Role.ADMIN, Role.USER)
   @UseGuards(JwtGuard, RolesGuard)
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(id, updateUserDto);
+  @Patch('/updateStudent')
+  updateStudent(@Req() request: Request, @Body() updateUserDto: UpdateUserDto) {
+    const headers = request.headers;
+    return this.userService.updateStudent(headers, updateUserDto);
   }
 
   @ApiBearerAuth()
   @Roles(Role.ADMIN, Role.ENTERPRISE)
   @UseGuards(JwtGuard, RolesGuard)
-  @Patch(':id')
-  updateEnterprise(@Param('id') id: string, @Body() updateUserDto: UpdateEnterpriseDto) {
-    return this.userService.update(id, updateUserDto);
+  @Patch('/updateEnterprise')
+  updateEnterprise(@Req() request: Request, @Body() updateUserDto: UpdateEnterpriseDto) {
+    const headers = request.headers;
+    return this.userService.updateEnterprise(headers, updateUserDto);
   }
 
   @ApiBearerAuth()
   @Roles(Role.ADMIN, Role.SENAC)
   @UseGuards(JwtGuard, RolesGuard)
-  @Patch(':id')
-  updateSenac(@Param('id') id: string, @Body() updateUserDto: UpdateSenacDto) {
-    return this.userService.update(id, updateUserDto);
+  @Patch('/updateSenac')
+  updateSenac(@Req() request: Request, @Body() updateUserDto: UpdateSenacDto) {
+    const headers = request.headers;
+    return this.userService.updateSenac(headers, updateUserDto);
   }
 
   @ApiBearerAuth()
   @Roles(Role.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
-  @Patch('secret/:id')
-  updateAdm(@Param('id') id: string, @Body() updateUserDto: UpdateAdminDto) {
-    return this.userService.update(id, updateUserDto);
+  @Patch('/updateAdmin')
+  updateAdm(@Req() request: Request, @Body() updateUserDto: UpdateAdminDto) {
+    const headers = request.headers;
+    return this.userService.updateAdm(headers, updateUserDto);
   }
 
   @ApiBearerAuth()
