@@ -21,7 +21,7 @@ export class JobsService {
 
     const created = await this.prisma.jobs.create(
       {
-        data: {...job, published: br, description: job.descripion},
+        data: {...job, published: br, description: job.description},
       }
     );
 
