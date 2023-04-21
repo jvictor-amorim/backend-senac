@@ -1,18 +1,24 @@
-FROM node:18-alpine
+FROM node:14 AS builder
 
-WORKDIR /usr/src/app
+# Create app directory
+WORKDIR /app
 
-ENV JWT_SECRET 007 
-ENV DATABASE_URL postgres://root:uMamxGi6XNYVqCuDDeYQ4ZdrclWXpwYs@dpg-cg19qrd269vfsnrln1kg-a.oregon-postgres.render.com/db_transformacao_digital_senac
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+COPY package*.json ./
+COPY prisma ./prisma/
 
-RUN yarn
-
-RUN yarn global add @nestjs/cli
-
-RUN yarn add @nestjs/passport @nestjs/jwt bcrypt class-validator class-transformer passport passport-jwt passport-local
-
-RUN yarn add @nestjs/swagger swagger-ui-express
+# Install app dependencies
+RUN npm install
 
 COPY . .
 
-EXPOSE 8000
+RUN npm run build
+
+FROM node:14
+
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/dist ./dist
+
+EXPOSE 3000
+CMD [ "npm", "run", "start:prod" ]
