@@ -91,20 +91,15 @@ export class JobsService {
 
   async findByName(courseName: string) {
     try { 
-      let data = [];
       const find = await this.prisma.courses.findMany({
         where: {
           name: {contains: courseName, mode: 'insensitive'},
-        }, orderBy: {
-          name: 'asc'
         }
       });
-      for(const item of find) {
-        this.findByCourse(item.id)
-        data.push(item);
-      }
-      console.log(data);
-      return data;
+
+      const jobs = this.findByCourse(find[0].id)
+
+      return jobs;
     } catch (error) {
       console.log(error);
     }
