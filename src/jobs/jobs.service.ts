@@ -89,7 +89,7 @@ export class JobsService {
     }
   }
 
-  async findByCourseName(courseName: string) {
+  async findByName(courseName: string) {
     try { 
       let data = [];
       const find = await this.prisma.courses.findMany({
@@ -99,10 +99,11 @@ export class JobsService {
           name: 'asc'
         }
       });
-      find.map(async (item) => {
+      for(const item of find) {
         this.findByCourse(item.id)
         data.push(item);
-      })
+      }
+      console.log(data);
       return data;
     } catch (error) {
       console.log(error);

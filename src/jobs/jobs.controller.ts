@@ -33,17 +33,17 @@ export class JobsController {
   @ApiBearerAuth()
   @Roles(Role.USER, Role.ADMIN, Role.SENAC)
   @UseGuards(JwtGuard, RolesGuard)
-  @Get(':courseName')
-  findByCourseName(@Param('courseName') courseName: string) {
-    return this.jobsService.findByCourseName(courseName);
+  @Get(':courseId')
+  findByCourse(@Param('courseId') courseId: string) {
+    return this.jobsService.findByCourse(courseId);
   }
 
   @ApiBearerAuth()
   @Roles(Role.USER, Role.ADMIN, Role.SENAC)
   @UseGuards(JwtGuard, RolesGuard)
-  @Get(':courseId')
-  findByCourse(@Param('courseId') courseId: string) {
-    return this.jobsService.findByCourse(courseId);
+  @Get('/courseName/:courseName')
+  findByCourseName(@Param('courseName') courseName: string) {
+    return this.jobsService.findByName(courseName);
   }
 
   @ApiBearerAuth()
