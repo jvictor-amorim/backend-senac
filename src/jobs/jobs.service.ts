@@ -76,11 +76,14 @@ export class JobsService {
 
   async findByCourse(courseId: string) {
     try {
-      return await this.prisma.jobs.findMany({
+      const find = await this.prisma.jobs.findMany({
         where: {
-          courseId: courseId,
+          courseId,
+        }, orderBy: {
+          published: 'desc'
         }
       });
+      return find;
     } catch (error) {
       console.log(error);
     }
