@@ -347,4 +347,39 @@ export class UserService {
     
     return `${user.name} foi removido do sistema!`;
   }
+
+  async importUsers(data: {}){
+    const data_copy = JSON.parse(JSON.stringify(data))
+    try {
+      for (const item of data_copy) {
+        const course = await this.prisma.courses.findMany({
+          where: {
+            name: item.CURSO_NAME
+          }
+        })
+        const user = 
+          {
+            "email": item.EMAIL,
+            "name": item.NAME,
+            "cpf": `${item.CPF}`,
+            "address": item.ADDRESS,
+            "phone": `${item.PHONE}`,
+            "courseId": course[0].id,
+            "status": true,
+            "password": await bcrypt.hash("SenhaTemp123", 10),
+          }
+
+      await this.prisma.user.create(
+        {
+          data: {...user, cnpj: '', status: user.status, role: Role.USER},
+        });
+      }
+
+      return {"status": "Imported successfully"}
+    } catch (error) {
+      console.log(error)
+    }
+    
+    return data
+  }
 }
