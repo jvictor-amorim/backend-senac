@@ -83,6 +83,14 @@ export class JobsService {
           published: 'desc'
         }
       });
+      for (const item of find) {
+        const course = await this.prisma.courses.findUnique({
+            where: {
+              id: item.courseId
+            }
+          })
+          item["course_name"] = course.name
+        }
       return find;
     } catch (error) {
       console.log(error);
