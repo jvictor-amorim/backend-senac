@@ -89,6 +89,26 @@ export class JobsService {
     }
   }
 
+  async findByCourseName(courseName: string) {
+    try { 
+      let data = [];
+      const find = await this.prisma.courses.findMany({
+        where: {
+          name: {contains: courseName, mode: 'insensitive'},
+        }, orderBy: {
+          name: 'asc'
+        }
+      });
+      find.map(async (item) => {
+        this.findByCourse(item.id)
+        data.push(item);
+      })
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async findByUserJob(jobId: string) {
     try {
       const user_ids = await this.prisma.userJobs.findMany({
