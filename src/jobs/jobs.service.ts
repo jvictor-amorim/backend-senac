@@ -76,11 +76,34 @@ export class JobsService {
 
   async findByCourse(courseId: string) {
     try {
-      return await this.prisma.jobs.findMany({
+      const find = await this.prisma.jobs.findMany({
         where: {
-          courseId: courseId,
+          courseId,
+        }, orderBy: {
+          published: 'desc'
         }
       });
+      return find;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async findByCourseName(courseName: string) {
+    try { 
+      let data = [];
+      const find = await this.prisma.courses.findMany({
+        where: {
+          name: {contains: courseName, mode: 'insensitive'},
+        }, orderBy: {
+          name: 'asc'
+        }
+      });
+      find.map(async (item) => {
+        this.findByCourse(item.id)
+        data.push(item);
+      })
+      return data;
     } catch (error) {
       console.log(error);
     }
