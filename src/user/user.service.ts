@@ -365,7 +365,7 @@ export class UserService {
             "address": item.ADDRESS,
             "phone": `${item.PHONE}`,
             "courseId": course[0].id,
-            "status": true,
+            "status": item.STATUS == 'ATIVO' ? true : false,
             "password": await bcrypt.hash("SenhaTemp123", 10),
           }
 
