@@ -366,7 +366,7 @@ export class UserService {
             "phone": `${item.PHONE}`,
             "courseId": course[0].id,
             "status": item.STATUS == 'ATIVO' ? true : false,
-            "password": await bcrypt.hash("SenhaTemp123", 10),
+            "password": await bcrypt.hash(process.env.PASSWORD_USER_IMPORT, 10),
           }
 
       await this.prisma.user.create(
