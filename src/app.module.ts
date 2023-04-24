@@ -9,9 +9,12 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { JobsModule } from './jobs/jobs.module';
 import { CoursesModule } from './courses/courses.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
-  imports: [UserModule, PrismaModule, AuthModule, JobsModule, CoursesModule],
+  imports: [UserModule, PrismaModule, AuthModule, JobsModule, CoursesModule, MulterModule.register({
+    dest: './uploads',
+  })],
   controllers: [AppController],
   providers: [AppService],
 })

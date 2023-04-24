@@ -99,6 +99,8 @@ export class JobsService {
 
   async findByName(courseName: string) {
     try { 
+      if(courseName == 'allvagas') return this.findAll()
+
       const find = await this.prisma.courses.findMany({
         where: {
           name: {contains: courseName, mode: 'insensitive'},

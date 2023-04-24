@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { Roles } from '../auth/decorators/roles.decorator';
@@ -16,6 +16,8 @@ import { CreateSenacDto } from './dto/create-senac.dto';
 import { CreateEnterpriseDto } from './dto/create-enterprise.dto';
 import { UpdateEnterpriseDto } from './dto/update-enterprise.dto';
 import { UpdateSenacDto } from './dto/update-senac.dto';
+import * as XLSX from 'xlsx';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Usuários')
 @Controller('users')
@@ -152,5 +154,15 @@ export class UserController {
   @Post('/mail')
   send_email(@Body() emailDto: CreateMailDto) {
     return this.userService.mail(emailDto);
+  }
+
+  @Post('/import')
+  @UseInterceptors(FileInterceptor('file'))
+  importExcel(@UploadedFile() file: Express.Multer.File) {
+    const workbook = XLSX.read(file.buffer);
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+    const data = XLSX.utils.sheet_to_json(worksheet);
+    return this.userService.importUsers(data);
   }
 }
