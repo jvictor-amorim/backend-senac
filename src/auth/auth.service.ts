@@ -26,6 +26,10 @@ export class AuthService {
     }
     async validateUser(email: string, password: string): Promise<User> {
         const user = await this.userService.findByEmails(email);
+
+        if(user.role === "ENTERPRISE" && user.status === false){
+            throw new Error('Inactive company, consult senac to formalize the registration')
+        }
         
         if(user){
             const isPasswordValid = await bcrypt.compare(password, user.password);
