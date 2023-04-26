@@ -63,9 +63,9 @@ export class UserController {
     return this.userService.monitoring(courseId);
   }
 
-  // @ApiBearerAuth()
-  // @Roles(Role.ADMIN, Role.SENAC)
-  // @UseGuards(JwtGuard, RolesGuard)
+  @ApiBearerAuth()
+  @Roles(Role.ADMIN, Role.SENAC)
+  @UseGuards(JwtGuard, RolesGuard)
   @Patch('/admin/updateEnterprise/:id')
   adminUpdateEnterprise(@Param('id') id: string, @Body() updateUserDto: UpdateEnterpriseDto) {
     return this.userService.adminUpdateEnterprise(id, updateUserDto);

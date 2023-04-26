@@ -23,7 +23,6 @@ export class JobsController {
   }
 
   @ApiBearerAuth()
-  @Roles(Role.USER, Role.ADMIN, Role.SENAC)
   @UseGuards(JwtGuard, RolesGuard)
   @Get()
   findAll() {
