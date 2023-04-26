@@ -225,6 +225,15 @@ export class UserService {
       }
     });
 
+    for (const item of finds) {
+      const course = await this.prisma.courses.findUnique({
+          where: {
+            id: item.courseId
+          }
+        })
+        item["course_name"] = course.name
+    }
+    
     const findss = finds.map((item) => ({
       ...item,
       password: undefined,
