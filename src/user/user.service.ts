@@ -325,6 +325,16 @@ export class UserService {
     return attUser;
   }
 
+  async adminUpdateEnterprise(id: string, updateUserDto: UpdateEnterpriseDto) {
+    const user = await this.findById(id);
+    
+    const attUser = await this.prisma.user.update({
+      where: {id: user.id},
+      data: updateUserDto,
+    })
+    return attUser;
+  }
+
   async updateSenac(headers: {}, updateUserDto: UpdateSenacDto) {
     const user = await this.findByUserToken(headers);
     
