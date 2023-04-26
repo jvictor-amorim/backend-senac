@@ -23,6 +23,7 @@ export class JobsController {
   }
 
   @ApiBearerAuth()
+  @Roles(Role.USER, Role.ADMIN, Role.SENAC, Role.ENTERPRISE)
   @UseGuards(JwtGuard, RolesGuard)
   @Get()
   findAll() {
@@ -30,6 +31,7 @@ export class JobsController {
   }
 
   @ApiBearerAuth()
+  @Roles(Role.USER, Role.ADMIN, Role.SENAC, Role.ENTERPRISE)
   @UseGuards(JwtGuard, RolesGuard)
   @Get(':courseId')
   findByCourse(@Param('courseId') courseId: string) {
@@ -37,6 +39,7 @@ export class JobsController {
   }
 
   @ApiBearerAuth()
+  @Roles(Role.USER, Role.ADMIN, Role.SENAC, Role.ENTERPRISE)
   @UseGuards(JwtGuard, RolesGuard)
   @Get('/courseName/:courseName')
   findByCourseName(@Param('courseName') courseName: string) {
@@ -44,6 +47,7 @@ export class JobsController {
   }
 
   @ApiBearerAuth()
+  @Roles(Role.USER, Role.ADMIN, Role.SENAC, Role.ENTERPRISE)
   @UseGuards(JwtGuard, RolesGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -76,6 +80,7 @@ export class JobsController {
   }
 
   @ApiBearerAuth()
+  @Roles(Role.ENTERPRISE, Role.ADMIN, Role.SENAC)
   @UseGuards(JwtGuard, RolesGuard)
   @Get('/job_user/:jobId')
   findByUserJob(@Param('jobId') jobId: string) {
