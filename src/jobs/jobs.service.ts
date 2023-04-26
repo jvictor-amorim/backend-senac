@@ -18,15 +18,36 @@ export class JobsService {
     const data = new Date();
 
     const br = new Date(data.setHours(data.getHours() - 3));
-
+    
     const created = await this.prisma.jobs.create(
       {
         data: {...job, published: br, description: job.description},
       }
     );
 
-    return created;
+    const users_jobs = await this.prisma.user.findMany({
+      where: {
+        courseId: created.courseId
+      }
+    })
+
+    const transporter_mail = await this.userService.transporter()
     
+    for (const item of users_jobs) {
+      try {
+        const mailOptions = {
+          text: `Verifique no portal, foi cadastrada uma nova vaga com o seu perfil.`,
+          from: 'Senac(NÃO RESPONDA!) <' + process.env.MAIL_SENAC,
+          to: item.email,
+          subject: 'Nova vaga.',
+        };
+        await transporter_mail.sendMail(mailOptions, (err: any, info: any) => {});
+      } catch (error) {
+        console.log("Error in send email: " + error)
+      }
+    }
+
+    return created;
   }
 
   async findByIdUser(id: string) {
